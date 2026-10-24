@@ -1,7 +1,7 @@
 import pandas as pd, json
 from pathlib import Path
 from collections import defaultdict
-D = Path("/home/hatch/workspace/indus-weave-hr-pipeline/data")
+D = Path(__file__).resolve().parents[1] / "data"
 shifts = {s['shift_code']: s for s in json.load(open(D/"shifts.json"))['shifts']}
 dm = pd.read_csv(D/"device_mapping.csv", dtype=str)
 mp = {(r.device_id, r.device_user_id): r.emp_id for r in dm.itertuples()}

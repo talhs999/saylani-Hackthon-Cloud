@@ -15,7 +15,7 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 
-BASE = Path("/home/hatch/workspace/indus-weave-hr-pipeline")
+BASE = Path(__file__).resolve().parents[1]
 DATA = BASE / "data"
 DB = BASE / "indus_weave.db"
 OUT = BASE / "analytics" / "results"
@@ -249,8 +249,8 @@ def main():
     # Faulty device correction
     cutoff = pd.Timestamp("2026-07-01")
     mask = (mapped["device_id"] == "DEV-SITE-01") & (mapped["punch_time_raw"] >= cutoff)
+    mapped["punch_time"] = mapped["punch_time_raw"]
     mapped.loc[mask, "punch_time"] = mapped.loc[mask, "punch_time_raw"] - pd.Timedelta(minutes=60)
-    mapped.loc[~mask, "punch_time"] = mapped.loc[~mask, "punch_time_raw"]
     print(f"faulty device correction: {mask.sum()} DEV-SITE-01 punches from 2026-07-01 shifted -60 min")
     mapped = mapped.sort_values(["emp_id", "punch_time"])
     # 2-minute dedup, kept-first

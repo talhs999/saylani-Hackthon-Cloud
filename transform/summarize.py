@@ -1,5 +1,8 @@
+from pathlib import Path
 import sqlite3, pandas as pd
-conn = sqlite3.connect("/home/hatch/workspace/indus-weave-hr-pipeline/indus_weave.db")
+
+BASE = Path(__file__).resolve().parents[1]
+conn = sqlite3.connect(BASE / "indus_weave.db")
 def q(sql):
     df = pd.read_sql(sql, conn)
     print(df.to_string(index=False))
@@ -7,11 +10,11 @@ def q(sql):
     return df
 
 print("=== Headcount total by month (Q1 sum) ===")
-q01 = pd.read_csv("/home/hatch/workspace/indus-weave-hr-pipeline/analytics/results/q01_headcount.csv")
+q01 = pd.read_csv(BASE / "analytics" / "results" / "q01_headcount.csv")
 print(q01.groupby("payroll_month")["headcount"].sum().to_string())
 print()
 print("=== OT by month (Q5 sum) ===")
-q05 = pd.read_csv("/home/hatch/workspace/indus-weave-hr-pipeline/analytics/results/q05_overtime_compare.csv")
+q05 = pd.read_csv(BASE / "analytics" / "results" / "q05_overtime_compare.csv")
 print(q05.groupby("payroll_month")[["computed_hours","approved_hours","paid_hours"]].sum().to_string())
 print()
 print("=== OT by plant (Q5 sum) ===")
@@ -22,18 +25,18 @@ q("SELECT payroll_month, SUM(amount) AS ot_cost, SUM(units) AS ot_hours_paid FRO
 print("=== Total payroll EARNING by month ===")
 q("SELECT payroll_month, SUM(amount) AS earning_cost FROM fact_payroll_line WHERE component_type='EARNING' GROUP BY payroll_month ORDER BY payroll_month")
 print("=== Q6 count by month ===")
-q06 = pd.read_csv("/home/hatch/workspace/indus-weave-hr-pipeline/analytics/results/q06_paid_exceeds_computed.csv")
+q06 = pd.read_csv(BASE / "analytics" / "results" / "q06_paid_exceeds_computed.csv")
 print(q06.groupby("payroll_month").size().to_string())
 print("Q6 total excess hours:", q06["excess_hours"].sum())
 print()
 print("=== Q8 distinct employees ===")
-q08 = pd.read_csv("/home/hatch/workspace/indus-weave-hr-pipeline/analytics/results/q08_paid_after_separation.csv")
+q08 = pd.read_csv(BASE / "analytics" / "results" / "q08_paid_after_separation.csv")
 print("rows:", len(q08), "distinct emp:", q08.emp_id.nunique())
 print(q08.groupby("emp_id")["total_amount_in_month"].sum().sort_values(ascending=False).head(20).to_string())
 print("Q8 total amount:", q08.total_amount_in_month.sum())
 print()
 print("=== Q7 ===")
-print(pd.read_csv("/home/hatch/workspace/indus-weave-hr-pipeline/analytics/results/q07_paid_zero_attendance.csv").to_string(index=False))
+print(pd.read_csv(BASE / "analytics" / "results" / "q07_paid_zero_attendance.csv").to_string(index=False))
 print()
 print("=== Approved OT with zero computed OT that day ===")
 q("""

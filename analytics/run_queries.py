@@ -1,6 +1,6 @@
 import sqlite3, csv
 from pathlib import Path
-BASE = Path("/home/hatch/workspace/indus-weave-hr-pipeline")
+BASE = Path(__file__).resolve().parents[1]
 DB = BASE / "indus_weave.db"
 AQ = BASE / "analytics"
 OUT = AQ / "results"

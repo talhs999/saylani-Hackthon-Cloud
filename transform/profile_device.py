@@ -1,6 +1,6 @@
 import pandas as pd, numpy as np, json
 from pathlib import Path
-D = Path("/home/hatch/workspace/indus-weave-hr-pipeline/data")
+D = Path(__file__).resolve().parents[1] / "data"
 shifts = {s['shift_code']: s for s in json.load(open(D/"shifts.json"))['shifts']}
 print(shifts)
 dm = pd.read_csv(D/"device_mapping.csv", dtype=str)

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.patches import FancyBboxPatch
 from pathlib import Path
-BASE = Path("/home/hatch/workspace/indus-weave-hr-pipeline")
+BASE = Path(__file__).resolve().parents[1]
 
 # ---------- ERD (Pillow, Workbench style) ----------
 # The Pillow generator in make_erd.py draws real table grids with

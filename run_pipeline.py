@@ -9,11 +9,11 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent
 
 STEPS = [
-    ["python3", str(BASE / "ingestion" / "load_raw.py")],
-    ["python3", str(BASE / "transform" / "build_pipeline.py")],
-    ["python3", str(BASE / "analytics" / "run_queries.py")],
-    ["python3", str(BASE / "quality" / "dq_checks.py")],
-    ["python3", str(BASE / "presentation" / "make_assets.py")],
+    [sys.executable, str(BASE / "ingestion" / "load_raw.py")],
+    [sys.executable, str(BASE / "transform" / "build_pipeline.py")],
+    [sys.executable, str(BASE / "analytics" / "run_queries.py")],
+    [sys.executable, str(BASE / "quality" / "dq_checks.py")],
+    [sys.executable, str(BASE / "presentation" / "make_assets.py")],
 ]
 
 def main():

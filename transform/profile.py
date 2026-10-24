@@ -1,6 +1,6 @@
 import json, pandas as pd, numpy as np
 from pathlib import Path
-D = Path("/home/hatch/workspace/indus-weave-hr-pipeline/data")
+D = Path(__file__).resolve().parents[1] / "data"
 def show(df, name):
     print(f"\n=== {name} {df.shape} ===")
     print(df.head(3).to_string())

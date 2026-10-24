@@ -1,5 +1,8 @@
 import sqlite3, pandas as pd
-conn = sqlite3.connect("/home/hatch/workspace/indus-weave-hr-pipeline/indus_weave.db")
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parents[1]
+conn = sqlite3.connect(BASE / "indus_weave.db")
 def run(name, sql, expect=0):
     try:
         df = pd.read_sql(sql, conn)

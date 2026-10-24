@@ -6,8 +6,17 @@ img = Image.new("RGB", (W, H), "white")
 d = ImageDraw.Draw(img)
 
 def font(size, bold=False):
-    p = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-    return ImageFont.truetype(p, size)
+    candidates = [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "arialbd.ttf" if bold else "arial.ttf",
+        "segoeuib.ttf" if bold else "segoeui.ttf",
+    ]
+    for c in candidates:
+        try:
+            return ImageFont.truetype(c, size)
+        except (OSError, IOError):
+            continue
+    return ImageFont.load_default()
 
 TITLE = font(44, True)
 SUB = font(24)
@@ -125,6 +134,7 @@ d.text((450, 1365), "- Dimensions (employee, department, shift, date) give descr
 d.text((450, 1405), "- Fact-to-fact lines show shared employee and date, not a direct FK.", font=NOTE, fill=(40,40,40), anchor="lt")
 d.text((450, 1445), "- Full columns and FKs are in warehouse/ddl/warehouse.sql.", font=NOTE, fill=(40,40,40), anchor="lt")
 
-out = pathlib.Path("/home/hatch/workspace/indus-weave-hr-pipeline/warehouse/erd.png")
+BASE = pathlib.Path(__file__).resolve().parents[1]
+out = BASE / "warehouse" / "erd.png"
 img.save(out, dpi=(200, 200))
 print(f"saved {out} {img.size}")

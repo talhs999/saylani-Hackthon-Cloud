@@ -89,9 +89,11 @@ foreign-key integrity is verified by the Stage 6 checks (22/22 pass).
 - `analytics/q01_headcount.sql` … `analytics/q10_leave_overuse.sql`, `analytics/results/*.csv` - Stage 5
 - `quality/dq_checks.py` - Stage 6
 - `presentation/cfo_findings.md`, `presentation/slides.pdf` - CFO demo
-- Bonus: `run_pipeline.py` one-command rebuild, plus `bonus/build_funnel.py` which builds the recruitment funnel and `bonus/dashboard.html`.
-- Bonus Next.js dashboard: `bonus/next-dashboard/` (run `npm install` then `npm run dev`, dashboard at `/`, admin editor at `/admin`). Build tested with Next 14.2.35.
-- Bonus results: 1,400 applications, 74 hired (5.3%), median time to hire 33 days. Biggest drop is Interviewed to Offered (only 34.2% move forward).
+- Bonus 1: `run_pipeline.py` one-command rebuild (re-runs all 6 stages and presentation assets).
+- Bonus 2: `bonus/incremental_load.py` delta-only incremental punch loader for mid-hackathon batches (idempotent, reconciled).
+- Bonus 3: `bonus/build_funnel.py` builds the recruitment funnel analysis, stage drop-offs, and `bonus/dashboard.html`.
+- Bonus 4: `bonus/next-dashboard/` Full PeopleOps Executive Suite built on warehouse tables & recruitment funnel (CFO Overtime Discrepancy, Warehouse Analytics, Funnel, and 22/22 DQ Suite). Run `npm run start` or `npm run dev` at `http://localhost:3000`.
+- Bonus results: 1,400 applications, 74 hired (5.3%), median time to hire 33 days. Overtime gap: 7,286 excess paid hours (PKR 3.48m bill). 22/22 DQ checks passing.
 
 ## Deadline
 Submit repo link before 05:00 AM, 25 Oct 2026. Target submit 04:30.
