@@ -6,33 +6,12 @@ from matplotlib.patches import FancyBboxPatch
 from pathlib import Path
 BASE = Path("/home/hatch/workspace/indus-weave-hr-pipeline")
 
-# ---------- ERD ----------
-fig, ax = plt.subplots(figsize=(14, 9))
-ax.set_xlim(0, 14); ax.set_ylim(0, 9); ax.axis("off")
-ax.set_title("Indus Weave — Star Schema ERD", fontsize=18, weight="bold", pad=20)
-def box(x, y, w, h, title, lines):
-    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.08", facecolor="#eef2ff", edgecolor="#1f3a93", linewidth=1.5))
-    ax.text(x+w/2, y+h-0.35, title, ha="center", va="top", fontsize=11, weight="bold")
-    for i, ln in enumerate(lines):
-        ax.text(x+0.15, y+h-0.85-i*0.35, ln, ha="left", va="top", fontsize=9)
-def line(x1, y1, x2, y2):
-    ax.plot([x1, x2], [y1, y2], color="#333333", linewidth=1.2)
-# Facts centre
-box(5.0, 3.5, 4.0, 2.2, "fact_attendance_daily", ["PK emp_id, work_date", "FK employee_key -> dim_employee", "FK dept_id -> dim_department", "FK shift_code -> dim_shift", "status, worked_hours, overtime_hours"])
-box(0.3, 0.3, 3.2, 1.8, "fact_leave_day", ["emp_id, leave_date", "leave_type, request_id"])
-box(5.0, 0.3, 3.2, 1.8, "fact_overtime_approved", ["request_id, emp_id, ot_date", "approved_hours"])
-box(9.8, 0.3, 3.9, 1.8, "fact_payroll_line", ["line_id, payroll_month", "emp_id, component, amount, units"])
-# Dimensions
-box(0.3, 6.5, 3.2, 1.8, "dim_employee (SCD2)", ["PK employee_key", "emp_id, dept_id, grade", "valid_from, valid_to, is_current"])
-box(5.0, 6.5, 3.2, 1.8, "dim_department", ["PK dept_id", "dept_name, plant, cost_center"])
-box(9.8, 6.5, 3.2, 1.8, "dim_shift", ["PK shift_code", "start_time, end_time"])
-box(9.8, 3.5, 3.2, 1.8, "dim_date", ["PK date", "year, month, day_of_week"])
-line(3.5, 7.4, 5.0, 5.0); line(8.2, 7.4, 7.0, 5.7); line(11.4, 6.5, 9.0, 5.0); line(9.8, 4.4, 9.0, 4.6)
-ax.text(7, 8.7, "Attendance belongs to Workforce; Payroll consumes attendance results.", ha="center", fontsize=10, style="italic")
-plt.tight_layout()
-plt.savefig(BASE / "warehouse" / "erd.png", dpi=200, bbox_inches="tight")
-plt.close()
-print("erd.png written")
+# ---------- ERD (Pillow, Workbench style) ----------
+# The Pillow generator in make_erd.py draws real table grids with
+# column types, PK/FK markers and orthogonal coloured joins. It is
+# used instead of the old matplotlib box diagram, which looked poor.
+import subprocess, sys
+subprocess.run([sys.executable, str(BASE / "presentation" / "make_erd.py")], check=True)
 
 # ---------- Slides (6 pages) ----------
 slides = [
