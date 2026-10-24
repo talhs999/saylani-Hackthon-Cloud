@@ -2,6 +2,11 @@
 
 ## Team
 Solo participant: Talha Khan
+Batch: 6
+Roll No: 873676
+Course Code: CDE
+Campus: Zaitoon Ashraf IT Park
+City: Karachi
 
 ## Setup (clean machine)
 ```bash
